@@ -9,13 +9,14 @@ class User
 
   # Create a booking if the resource is available
   def create_booking(resource)
-    if resource.available?
-      booking = Booking.new(self, resource)
-      resource.book!
-      booking
-    else
-      raise "Resource is not available"
+    raise "Invalid resource" if resource.nil?
+  
+    unless resource.available?
+      raise "Resource '#{resource.name}' is not available"
     end
+  
+    resource.book!
+  
+    Booking.new(self, resource)
   end
 end
-
