@@ -1,31 +1,35 @@
+require_relative 'errors'
+
 class Resource
-    attr_reader :id, :name, :category
+    attr_reader :id, :name, :category, :current_booking
   
-    def initialize(id, name, category)
+    def initialize(id:, name:, category:)
       @id = id
       @name = name
       @category = category
       @available = true
+      @current_booking = nil
     end
   
     def available?
-      @available
+      current_booking.nil?
     end
   
     # Book the resource
-    def book!
-      raise "Resource '#{name}' is already booked." unless available?
-      @available = false
+    def assign_booking(booking)
+      raise ResourceUnavailableError, "Resource '#{name}' is already booked." unless available?
+      @current_booking = booking
     end
   
     # Release the resource (when cancelling)
     def release!
-      raise "Resource '#{name}' is already available." if available?
       @available = true
+      raise InvalidActionError, "Resource '#{name}' is already available." if available?
+      @current_booking = nil
     end
   
     def to_s
       status = available? ? "Available" : "Booked"
-      "Resource: #{name} (#{status})"
+      "Resource(id: #{id}, name: #{name}, category: #{category}, status: #{status})"
     end
   end
