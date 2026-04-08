@@ -1,6 +1,7 @@
 require_relative 'errors'
 
 class Resource
+    @@all_resources = []
     attr_reader :id, :name, :category, :current_booking
   
     def initialize(id:, name:, category:)
@@ -9,6 +10,11 @@ class Resource
       @category = category
       @available = true
       @current_booking = nil
+      @@all_resources << self
+    end
+  
+    def self.available_resources
+      @@all_resources.select(&:available?)
     end
   
     def available?

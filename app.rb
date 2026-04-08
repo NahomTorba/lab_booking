@@ -35,3 +35,9 @@ puts "\nBooking again after cancellation..."
 booking2 = bekele.create_booking(microscope)
 puts booking2
 puts microscope
+
+puts "\nAll active bookings:"
+Booking.active_bookings.each { |booking| puts booking }
+
+puts "\nAll available resources:"
+Resource.available_resources.each { |resource| puts resource }

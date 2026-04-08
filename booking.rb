@@ -2,6 +2,7 @@ require_relative 'errors'
 
 class Booking
   VALID_STATUSES = ["active", "cancelled"]
+  @@all_bookings = []
 
   attr_reader :user, :resource, :created_at
   attr_accessor :status
@@ -17,6 +18,11 @@ class Booking
     @created_at = Time.now
 
     resource.assign_booking(self)
+    @@all_bookings << self
+  end
+
+  def self.active_bookings
+    @@all_bookings.select(&:active?)
   end
 
   def cancel
